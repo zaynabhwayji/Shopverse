@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const orderSchema = new mongoose.Schema({
     // one-to-many: placed by ONE user
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
