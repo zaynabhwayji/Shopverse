@@ -21,7 +21,7 @@ exports.createOrder = async (req, res, next) => {
         }
 
         const order = await Order.create({
-            user,
+            user: req.user.id, // use the authenticated user's ID   
             items,
             total
         });
@@ -105,4 +105,24 @@ exports.deleteOrder = async (req, res, next) => {
     catch (err) {
         next(err);
     }
+};
+
+exports.getMyOrders = async (req, res, next) => {
+  try {
+    const orders = await Order.find({
+      user: req.user._id,
+    })
+      .populate("user", "name email")
+      .populate({
+        path: "items.product",
+        populate: [
+          { path: "category" },
+          { path: "tags" },
+        ],
+      });
+
+    res.json(orders);
+  } catch (err) {
+    next(err);
+  }
 };

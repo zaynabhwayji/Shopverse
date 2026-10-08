@@ -7,14 +7,19 @@ const categoryRoutes = require("./routes/categoryRoutes");
 const tagRoutes = require("./routes/tagRoutes");
 const userRoutes = require("./routes/userRoutes");
 const orderRoutes = require("./routes/orderRoutes");
+const authRoutes = require("./routes/authRoutes");
+const cors = require("cors");
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 mongoose
     .connect(process.env.MONGO_URI)
     .then(() => console.log("DB connected"))
     .catch((err) => console.log("DB error:", err));
+
+app.use("/auth", authRoutes);
 
 app.use("/products", productRoutes);
 app.use("/categories", categoryRoutes);
